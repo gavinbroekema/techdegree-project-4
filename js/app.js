@@ -8,9 +8,6 @@ start.addEventListener('click', (e) => {
     const game = new Game();
     game.startGame();
     game.handleInteraction();
-    
-    
-    console.log(game.missed);
  
 })
 

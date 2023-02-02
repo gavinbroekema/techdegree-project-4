@@ -41,12 +41,14 @@ class Phrase {
         letters.forEach(letter => {
             if(e.target.innerHTML === letter && e.target.className !== 'keyrow') {
                 e.target.className = 'chosen';
-                console.log(e.target.className);
+                e.target.disabled = true;
+
                 matchedLetter = letter;
             } 
         })
         if(e.target.className !== 'keyrow' && matchedLetter === null) {
             e.target.className = 'wrong';       
+            e.target.disabled = true;
         } 
 
         return matchedLetter;

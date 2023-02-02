@@ -5,7 +5,7 @@
 class Game {
     constructor() {
         this.missed = 0;
-        this.phrases = [new Phrase('TEST A'), new Phrase('TEST B'), new Phrase('TEST C'), new Phrase('TEST D'), new Phrase('TEST E')];
+        this.phrases = [new Phrase('i love you'), new Phrase('you are my favorite'), new Phrase('mexican tonight'), new Phrase('hang out'), new Phrase('cuddle time')];
         this.activePhrase = null;
     }
 
@@ -39,9 +39,10 @@ class Game {
         if(letterValidator === null && e.target.className !== 'keyrow') {
             const tries = document.getElementsByClassName('tries');
             for(let i = (tries.length - 1); i >= 0; i--) {
+                console.log(tries[i].firstChild.src);
                 // is there a better way than the full path?
-                if(tries[i].firstChild.src === 'file:///Users/gavinbroekema/Documents/Programming/TechDegree%20-%20GitHub/techdegree-project-4/images/liveHeart.png') {
-                    tries[i].firstChild.src = 'file:///Users/gavinbroekema/Documents/Programming/TechDegree%20-%20GitHub/techdegree-project-4/images/lostHeart.png';
+                if(tries[i].firstChild.src.includes('images/liveHeart.png')) {
+                    tries[i].firstChild.src = 'images/lostHeart.png';
                     break;
                 }
             }
@@ -70,9 +71,7 @@ class Game {
         // check number of correct tiles
         lettersArray.forEach(letter => {
             if(letter.classList.contains('show')) {
-                correctTiles++;
-                console.log(correctTiles);
-            } 
+                correctTiles++;            } 
             
         })
 
@@ -87,7 +86,7 @@ class Game {
         console.log('Resetting...')
         // Remove the phrase from the board
         const phrase = document.getElementById('phrase');
-        phrase.firstChild.remove;
+        phrase.firstChild.remove();
 
         // Reset all keys 
         // For some reason I am unable to 
@@ -103,6 +102,15 @@ class Game {
             key.className = 'key';
         })
 
+        // enable all buttons
+        const keyButtons = document.querySelectorAll('.key');
+        console.log(keyButtons);
+        keyButtons.forEach(key => {
+            console.log(key);
+            key.disabled = false;
+        })
+        
+
         // Reset lives
         this.missed = 0; 
         const scoreboard = document.getElementById('scoreboard');
@@ -110,10 +118,8 @@ class Game {
         const triesArray = Array.from(tries);
         
         for(let i = 0; i < triesArray.length; i++) {
-            triesArray[i].src = 'file:///Users/gavinbroekema/Documents/Programming/TechDegree%20-%20GitHub/techdegree-project-4/images/liveHeart.png';
+            triesArray[i].src = 'images/liveHeart.png';
         }
-        console.log(tries);
-
     }
 
     gameOver() {
@@ -123,7 +129,6 @@ class Game {
         const overlay = document.getElementById('overlay');
 
         if(this.missed === 5) {
-            console.log('Game over');
             overlay.className = 'lose';
             overlay.style.display = '';
 
