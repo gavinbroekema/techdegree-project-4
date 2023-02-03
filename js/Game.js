@@ -109,8 +109,10 @@ class Game {
             console.log(key);
             key.disabled = false;
         })
-        
 
+        // reset game object
+        this.activePhrase = null;
+        
         // Reset lives
         this.missed = 0; 
         const scoreboard = document.getElementById('scoreboard');
@@ -149,7 +151,7 @@ class Game {
         // check letter 
         const qwerty = document.getElementById('qwerty');
         qwerty.addEventListener('click', e => {
-            this.activePhrase.checkLetter(e);
+            // this.activePhrase.checkLetter(e);
             this.activePhrase.showMatchedLetter(e);
             this.removeLife(e);
             this.checkForWin();

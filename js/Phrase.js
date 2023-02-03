@@ -40,17 +40,15 @@ class Phrase {
         let matchedLetter = null;
         letters.forEach(letter => {
             if(e.target.innerHTML === letter && e.target.className !== 'keyrow') {
-                e.target.className = 'chosen';
+                e.target.className = 'key chosen';
                 e.target.disabled = true;
-
                 matchedLetter = letter;
             } 
         })
         if(e.target.className !== 'keyrow' && matchedLetter === null) {
-            e.target.className = 'wrong';       
+            e.target.className = 'key wrong';       
             e.target.disabled = true;
         } 
-
         return matchedLetter;
     }
     
