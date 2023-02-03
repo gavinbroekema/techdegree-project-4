@@ -2,20 +2,20 @@
  * Project 4 - OOP Game App
  * Phrase.js */
 
+
+/**
+ * Phrase Class
+ */
 class Phrase {
-    // is this still needed w getter and setter?
     constructor(phrase) {
         this.phrase = phrase;
     }
-
     set phrase(phrase) {
         this._phrase = phrase.toLowerCase();
     }
-
     get phrase() {
         return this._phrase;
     }
-
     addPhraseToDisplay(phrase) {
         let phraseArray = phrase.split('');
         let fullPhraseHTML = '<ul>';
@@ -28,7 +28,6 @@ class Phrase {
         })
         fullPhraseHTML += '</ul>';
         return fullPhraseHTML;
-
     }
 
     /**
@@ -54,7 +53,7 @@ class Phrase {
     
     /**
      * Check to see if the letter clicked on the screen matches any of the letters in the phrase
-
+     * @param {*} e 
      */
     showMatchedLetter(e) {
         // change one or many of those letters' classes from hide to show

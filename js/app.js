@@ -4,14 +4,8 @@
 
 const start = document.getElementById('btn__reset');
 
+const game = new Game();
 start.addEventListener('click', (e) => {
-    const game = new Game();
-    game.startGame();
-    game.handleInteraction();
- 
+    game.startGame();  
 })
-
-// start.addEventListener('onkeyup', (e) => {
-//     let keyPress = 
-
-// })
+game.handleInteraction();

@@ -5,7 +5,7 @@
 class Game {
     constructor() {
         this.missed = 0;
-        this.phrases = [new Phrase('i love you'), new Phrase('you are my favorite'), new Phrase('mexican tonight'), new Phrase('hang out'), new Phrase('cuddle time')];
+        this.phrases = [new Phrase('test a'), new Phrase('test b'), new Phrase('test c'), new Phrase('test d'), new Phrase('test e')];
         this.activePhrase = null;
     }
 
@@ -22,34 +22,29 @@ class Game {
         this.activePhrase = randomPhrase;
 
         // create a phrase object and set the phrase to the active phrase
-        
         // addPhraseToDisplay(activePhrase)
         const phraseDisplay = document.getElementById('phrase');
         phraseDisplay.innerHTML = randomPhrase.addPhraseToDisplay(this.activePhrase.phrase);
-
-        // const qwerty = document.getElementById('qwerty');
-        
-        
     }
 
     removeLife(e) {
         // liveHeart.png images with a lostHeart.png
         // missed ++
-        let letterValidator = this.activePhrase.checkLetter(e);
+        const letterValidator = this.activePhrase.checkLetter(e);
         if(letterValidator === null && e.target.className !== 'keyrow') {
             const tries = document.getElementsByClassName('tries');
+            const livesLeft = 5 - this.missed;
+            
             for(let i = (tries.length - 1); i >= 0; i--) {
-                console.log(tries[i].firstChild.src);
+    
                 // is there a better way than the full path?
                 if(tries[i].firstChild.src.includes('images/liveHeart.png')) {
                     tries[i].firstChild.src = 'images/lostHeart.png';
                     break;
                 }
             }
-
             this.missed++;
         }
-        
     }
 
     /**
@@ -57,6 +52,8 @@ class Game {
      * @returns boolean
      */
     checkForWin() {
+        console.log(this.activePhrase);
+        console.log(this.missed);
         const phrase = document.getElementById('phrase');
         const letters = phrase.querySelectorAll('li');
         const lettersArray = Array.from(letters);
@@ -74,47 +71,38 @@ class Game {
                 correctTiles++;            } 
             
         })
-
         if(correctTiles === phraseLength) {
             return true;
         }
-        
-
     }
 
     resetBoard() {
-        console.log('Resetting...')
+        console.log('Resetting...');
         // Remove the phrase from the board
         const phrase = document.getElementById('phrase');
         phrase.firstChild.remove();
 
-        // Reset all keys 
-        // For some reason I am unable to 
+        // Reset all keys  
         const keysChosenArray = Array.from(document.getElementsByClassName('chosen'));
         const keysWrongArray = Array.from(document.getElementsByClassName('wrong'));
-
 
         keysChosenArray.forEach(key => {
             key.className = 'key';
         })
-
         keysWrongArray.forEach(key => {
             key.className = 'key';
         })
-
         // enable all buttons
         const keyButtons = document.querySelectorAll('.key');
-        console.log(keyButtons);
         keyButtons.forEach(key => {
-            console.log(key);
             key.disabled = false;
         })
 
-        // reset game object
+        // reset game
         this.activePhrase = null;
+        this.missed = 0;
         
-        // Reset lives
-        this.missed = 0; 
+        
         const scoreboard = document.getElementById('scoreboard');
         const tries = scoreboard.querySelectorAll('img');
         const triesArray = Array.from(tries);
@@ -124,34 +112,33 @@ class Game {
         }
     }
 
+    /**
+     * Checks to see if the game is over and displays a win or loss overlay
+     */
     gameOver() {
         // display original start screen overlay
         // if win display start
-        // if loss display loss
         const overlay = document.getElementById('overlay');
-
         if(this.missed === 5) {
             overlay.className = 'lose';
             overlay.style.display = '';
-
-            // reset game 
-
             this.resetBoard();
-
+        // if loss display loss
         } else if (this.missed < 5 && this.checkForWin() === true) {
             overlay.className = 'win';
             overlay.style.display = '';
-            // reset lives 
             this.resetBoard();
         }
 
     }
-
+    /**
+     * Handles all interations within the game
+     */
     handleInteraction() {
-        // check letter 
+
         const qwerty = document.getElementById('qwerty');
         qwerty.addEventListener('click', e => {
-            // this.activePhrase.checkLetter(e);
+            this.activePhrase.checkLetter(e);
             this.activePhrase.showMatchedLetter(e);
             this.removeLife(e);
             this.checkForWin();
