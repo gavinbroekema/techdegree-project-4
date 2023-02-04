@@ -36,18 +36,12 @@ class Phrase {
      */
     checkLetter(e) {
         const letters = this._phrase.split('');
-        let matchedLetter = null;
+        let matchedLetter = false;
         letters.forEach(letter => {
-            if(e.target.innerHTML === letter && e.target.className !== 'keyrow') {
-                e.target.className = 'key chosen';
-                e.target.disabled = true;
-                matchedLetter = letter;
-            } 
+            if(e.target.innerHTML === letter) {
+                matchedLetter = true;
+            }
         })
-        if(e.target.className !== 'keyrow' && matchedLetter === null) {
-            e.target.className = 'key wrong';       
-            e.target.disabled = true;
-        } 
         return matchedLetter;
     }
     
@@ -57,7 +51,16 @@ class Phrase {
      */
     showMatchedLetter(e) {
         // change one or many of those letters' classes from hide to show
-        let matchedLetter = this.checkLetter(e);
+        let matchedLetter = '';
+        const letters = this._phrase.split('');
+
+        letters.forEach(letter => {
+            // console.log(letter + e.target.innerHTML);
+            if(e.target.innerHTML === letter) {
+                console.log('Letter matched');
+                matchedLetter = letter;
+            }
+        })
         const phraseHTML = document.getElementsByClassName('letter');
         Array.from(phraseHTML).forEach(listItem => {
             if(listItem.innerHTML === matchedLetter) {

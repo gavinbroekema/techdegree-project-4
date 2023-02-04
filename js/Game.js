@@ -28,22 +28,21 @@ class Game {
     }
 
     removeLife(e) {
-        // liveHeart.png images with a lostHeart.png
-        // missed ++
-        const letterValidator = this.activePhrase.checkLetter(e);
-        if(letterValidator === null && e.target.className !== 'keyrow') {
-            const tries = document.getElementsByClassName('tries');
-            const livesLeft = 5 - this.missed;
-            
-            for(let i = (tries.length - 1); i >= 0; i--) {
-    
-                // is there a better way than the full path?
-                if(tries[i].firstChild.src.includes('images/liveHeart.png')) {
-                    tries[i].firstChild.src = 'images/lostHeart.png';
-                    break;
-                }
-            }
+        let livesLeft;
+        if(e.target.className !== 'keyrow') {
+
             this.missed++;
+            livesLeft = 5 - this.missed;
+            
+            
+            const tries = document.getElementsByClassName('tries');
+            
+            for(let i = 0; i < livesLeft - 1; i++) {
+                tries[i].firstChild.src = 'images/liveHeart.png';
+            }
+            for(let j = livesLeft; j < 5; j++) {
+                tries[j].firstChild.src = 'images/lostHeart.png';
+            }
         }
     }
 
@@ -52,8 +51,6 @@ class Game {
      * @returns boolean
      */
     checkForWin() {
-        console.log(this.activePhrase);
-        console.log(this.missed);
         const phrase = document.getElementById('phrase');
         const letters = phrase.querySelectorAll('li');
         const lettersArray = Array.from(letters);
@@ -119,14 +116,17 @@ class Game {
         // display original start screen overlay
         // if win display start
         const overlay = document.getElementById('overlay');
+        const btn__reset = document.getElementById('btn__reset');
         if(this.missed === 5) {
             overlay.className = 'lose';
             overlay.style.display = '';
+            btn__reset.innerHTML = 'You Lose';
             this.resetBoard();
         // if loss display loss
         } else if (this.missed < 5 && this.checkForWin() === true) {
             overlay.className = 'win';
             overlay.style.display = '';
+            btn__reset.innerHTML = 'You Win!';
             this.resetBoard();
         }
 
@@ -135,16 +135,33 @@ class Game {
      * Handles all interations within the game
      */
     handleInteraction() {
-
         const qwerty = document.getElementById('qwerty');
         qwerty.addEventListener('click', e => {
-            this.activePhrase.checkLetter(e);
-            this.activePhrase.showMatchedLetter(e);
-            this.removeLife(e);
-            this.checkForWin();
-            this.gameOver();
+            if(e.target.nodeName === 'BUTTON') {
+                const letters = this.activePhrase.phrase.split('');
+                e.target.disabled = true;
+                if(this.activePhrase.checkLetter(e)) {
+                    letters.forEach(letter => {
+                        if(e.target.innerHTML === letter) {
+                            e.target.className = 'key chosen';
+                        }       
+                    })
+                    this.activePhrase.showMatchedLetter(e);
+                    if(this.checkForWin()) {
+                        this.gameOver();
+                    }
+                } else if (!this.activePhrase.checkLetter(e)) {
+                    letters.forEach(letter => {
+                        if(e.target.innerHTML !== letter) {
+                            e.target.className = 'key wrong';
+                        }       
+                    })
+                    this.removeLife(e);
+                    this.gameOver();
+                }
+            }
         })
-
+            
     }
  
 
